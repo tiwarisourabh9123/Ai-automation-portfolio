@@ -1,0 +1,294 @@
+{
+  "name": "AI Inbound Lead Qualification & Routing Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-inbound",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -800,
+        -64
+      ],
+      "id": "acb826f8-13dc-4381-9505-2f646410bf97",
+      "name": "Webhook",
+      "webhookId": "1e29a511-1349-43e6-a15f-b62ad86ac948"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn items.map(item => {\n  const body = item.json.body || {};\n  \n  const firstName = (body.first_name || '').trim();\n  const lastName = (body.last_name || '').trim();\n  const email = (body.email || '').trim().toLowerCase();\n  const company = (body.company || '').trim();\n  const useCase = (body.use_case_notes || '').trim();\n  \n  const companySize = parseInt(body.company_size, 10) || 0;\n  const rawBudget = (body.annual_budget || '').replace(/[^0-9]/g, '');\n  const annualBudget = parseInt(rawBudget, 10) || 0;\n  \n  let score = 20;\n  \n  if (companySize >= 100) score += 30;\n  else if (companySize >= 25) score += 20;\n  else if (companySize >= 5) score += 10;\n  \n  if (annualBudget >= 20000) score += 35;\n  else if (annualBudget >= 10000) score += 25;\n  else if (annualBudget >= 3000) score += 15;\n  \n  const isCorporateEmail = !email.endsWith('@gmail.com') && \n                           !email.endsWith('@yahoo.com') && \n                           !email.endsWith('@hotmail.com') &&\n                           !email.endsWith('@outlook.com');\n  if (isCorporateEmail) score += 15;\n  \n  const finalScore = Math.min(score, 100);\n  const qualificationTier = finalScore >= 70 ? 'Tier 1 (High Priority)' \n                          : finalScore >= 45 ? 'Tier 2 (Medium Priority)' \n                          : 'Tier 3 (Nurture)';\n\n  return {\n    json: {\n      fullName: `${firstName} ${lastName}`.trim(),\n      email,\n      company,\n      companySize,\n      annualBudget,\n      isCorporateEmail,\n      initialScore: finalScore,\n      qualificationTier,\n      useCaseNotes: useCase,\n      receivedAt: new Date().toISOString()\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        -160
+      ],
+      "id": "5c436ba0-ad83-429e-89cf-3c2362e7dd7b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "03d69a20-981c-4eb6-aad5-9b3e441e84cf",
+              "leftValue": "={{ $json.initialScore}}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -336,
+        -256
+      ],
+      "id": "1f921fa2-55eb-49bc-8433-7e46f3da895c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3-flash-preview",
+          "mode": "list",
+          "cachedResultName": "Gemini 3 Flash Preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert sales automation engineer. Analyze this inbound B2B lead:\n\n- Lead Name: {{ $json.fullName }}\n- Company: {{ $json.company }} (Company Size: {{ $json.companySize }})\n- Estimated Budget: ${{ $json.annualBudget }}\n- Pain Points & Problem Statement: {{ $json.useCaseNotes }}\n\nProvide:\n1. Executive Problem Summary (2 sentences max)\n2. Top 3 concrete automation solutions to pitch on our discovery call\n3. Recommended outreach urgency (e.g. immediate callback vs within 24h)"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        -272
+      ],
+      "id": "64e70860-09fa-4bab-9428-b4fe3deeedea",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pglEYdOLlzfam3xF",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oouGgbHRxWn-qEODvcs1FxGHxZWMJFq-9gstpBWwCaY",
+          "mode": "list",
+          "cachedResultName": "Hot Leads - AI Qualification Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oouGgbHRxWn-qEODvcs1FxGHxZWMJFq-9gstpBWwCaY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oouGgbHRxWn-qEODvcs1FxGHxZWMJFq-9gstpBWwCaY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "1": "={{ $('Code in JavaScript').item.json.fullName }}",
+            "Email": "={{ $('Code in JavaScript').item.json.email}}",
+            "Company": "={{ $('Code in JavaScript').item.json.company }}",
+            "Company Size": "={{ $('Code in JavaScript').item.json.companySize }}",
+            "Annual Budget ($)": "={{ $('Code in JavaScript').item.json.annualBudget }}",
+            "Lead Score": "={{ $('Code in JavaScript').item.json.initialScore }}",
+            "Qualification Tier": "={{ $('Code in JavaScript').item.json.qualificationTier }}",
+            "AI Strategic Breakdown & Solutions": "={{ $json.content.parts[0].text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "1",
+              "displayName": "1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company Size",
+              "displayName": "Company Size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Annual Budget ($)",
+              "displayName": "Annual Budget ($)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Qualification Tier",
+              "displayName": "Qualification Tier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Strategic Breakdown & Solutions",
+              "displayName": "AI Strategic Breakdown & Solutions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Received",
+              "displayName": "Date Received",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        -256
+      ],
+      "id": "8f5bd312-5313-4bc1-b236-67af04c22349",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9bVa1YQWOH7YKhhD",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "36754500-3de9-43a2-b5d0-cca6774f42f3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "29f658c7f153f83523627935f51fc6fd63cf42eb6dbf7c2255a5aeb54d103482"
+  },
+  "nodeGroups": [],
+  "id": "tc0TuBL004aRatB8",
+  "tags": []
+}
