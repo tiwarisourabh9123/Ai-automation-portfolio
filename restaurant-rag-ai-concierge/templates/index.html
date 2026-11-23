@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spice & Flame Bistro | AI Concierge Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-stone-900 text-white sticky top-0 z-40 shadow">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold tracking-wide text-amber-400">Spice & Flame Bistro</h1>
+      <nav class="space-x-6 text-sm">
+        <a href="#menu" class="hover:text-amber-400">Menu</a>
+        <a href="#reserve" class="hover:text-amber-400">Reserve Table</a>
+        <a href="/bookings" class="text-amber-300 hover:text-amber-200 font-medium">View Bookings</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-stone-900 text-white py-20 px-6 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="bg-amber-500/20 text-amber-300 text-xs uppercase tracking-widest px-3 py-1 rounded-full">
+        Powered by Hybrid RAG + Gemini Tool Calling
+      </span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-4 leading-tight">
+        Authentic Indian Flavors, Guided by AI
+      </h2>
+      <p class="text-stone-300 mt-4 text-lg">
+        Ask our AI Concierge about vegan options, allergies, delivery policies, table reservations, or connect directly with our desk team.
+      </p>
+      <a href="#menu" class="inline-block mt-8 bg-amber-500 hover:bg-amber-600 text-stone-950 font-semibold px-6 py-3 rounded-lg transition">
+        Explore Menu
+      </a>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="max-w-6xl mx-auto px-6 py-16">
+    <h3 class="text-3xl font-bold text-center mb-10">Signature Dishes</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex justify-between items-start">
+          <h4 class="font-bold text-lg">Paneer Tikka Platter</h4>
+          <span class="font-semibold text-amber-600">₹280</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-1">Starters • Medium Spice • Contains Dairy</p>
+        <p class="text-sm text-stone-600 mt-3">Cottage cheese cubes marinated in hung curd, Kashmiri chilli, and tandoori spices, char-grilled with bell peppers.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex justify-between items-start">
+          <h4 class="font-bold text-lg">Crispy Chilli Baby Corn</h4>
+          <span class="font-semibold text-amber-600">₹240</span>
+        </div>
+        <p class="text-xs text-emerald-700 font-medium mt-1">Starters • Vegan • High Spice</p>
+        <p class="text-sm text-stone-600 mt-3">Wok-tossed baby corn coated in light cornflour batter with garlic, spring onions, and fiery Schezwan glaze.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex justify-between items-start">
+          <h4 class="font-bold text-lg">Murgh Malai Kebab</h4>
+          <span class="font-semibold text-amber-600">₹340</span>
+        </div>
+        <p class="text-xs text-rose-600 font-medium mt-1">Starters • Mild • Contains Dairy & Cashew</p>
+        <p class="text-sm text-stone-600 mt-3">Tender chicken breast pieces marinated in cream, cashew paste, cardamom, and white pepper.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex justify-between items-start">
+          <h4 class="font-bold text-lg">Dal Tadka & Jeera Rice Bowl</h4>
+          <span class="font-semibold text-amber-600">₹260</span>
+        </div>
+        <p class="text-xs text-emerald-700 font-medium mt-1">Mains • Vegan & Nut-Free • Mild</p>
+        <p class="text-sm text-stone-600 mt-3">Yellow lentils tempered with cumin, garlic, and tomatoes served alongside fragrant cumin basmati rice.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex justify-between items-start">
+          <h4 class="font-bold text-lg">Hyderabadi Chicken Dum Biryani</h4>
+          <span class="font-semibold text-amber-600">₹380</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-1">Mains • High Spice • Contains Dairy</p>
+        <p class="text-sm text-stone-600 mt-3">Slow-cooked aromatic basmati rice layered with saffron, mint, fried onions, and spiced chicken. Served with raita.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation Form -->
+  <section id="reserve" class="bg-stone-100 py-16 px-6">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-stone-200">
+      <h3 class="text-2xl font-bold mb-2">Reserve a Table</h3>
+      <p class="text-sm text-stone-500 mb-6">Book here or ask the AI Concierge in chat—all bookings appear in the Staff Desk View.</p>
+      <form id="bookingForm" class="space-y-4">
+        <input id="resName" type="text" placeholder="Your Name" required class="w-full border border-stone-300 rounded-lg px-4 py-2.5 text-sm" />
+        <div class="grid grid-cols-2 gap-4">
+          <input id="resGuests" type="number" min="1" max="12" placeholder="Guests (1-12)" required class="w-full border border-stone-300 rounded-lg px-4 py-2.5 text-sm" />
+          <input id="resTime" type="time" required class="w-full border border-stone-300 rounded-lg px-4 py-2.5 text-sm" />
+        </div>
+        <button type="submit" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-2.5 rounded-lg text-sm">
+          Confirm Reservation
+        </button>
+      </form>
+      <p id="bookingMsg" class="text-emerald-700 text-sm font-medium mt-3 hidden"></p>
+    </div>
+  </section>
+
+  <script src="/static/js/chat_widget.js"></script>
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msgEl = document.getElementById("bookingMsg");
+      const payload = {
+        customer_name: document.getElementById("resName").value,
+        guests: document.getElementById("resGuests").value,
+        time_slot: document.getElementById("resTime").value,
+      };
+      const res = await fetch("/api/reserve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      msgEl.classList.remove("hidden", "text-emerald-700", "text-rose-600");
+      if (res.ok) {
+        msgEl.classList.add("text-emerald-700");
+        msgEl.textContent = `Confirmed! Booking ID: ${data.booking_id} for ${data.guests} guests at ${data.time_slot}.`;
+        e.target.reset();
+      } else {
+        msgEl.classList.add("text-rose-600");
+        msgEl.textContent = data.error;
+      }
+    });
+  </script>
+</body>
+</html>

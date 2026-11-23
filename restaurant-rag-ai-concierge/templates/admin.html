@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Orders & Bookings | Spice & Flame Bistro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-stone-100 text-stone-800 font-sans">
+  <header class="bg-stone-900 text-white px-6 py-4 flex justify-between items-center shadow">
+    <h1 class="text-lg font-bold text-amber-400">Spice & Flame — Live Orders & Table Bookings</h1>
+    <div class="flex items-center gap-3">
+      {% if not locked %}
+      <a href="/bookings/logout" class="text-sm bg-rose-700 hover:bg-rose-600 px-3 py-1.5 rounded">Lock Page</a>
+      {% endif %}
+      <a href="/" class="text-sm bg-stone-800 hover:bg-stone-700 px-3 py-1.5 rounded">← Back to Website</a>
+    </div>
+  </header>
+
+  {% if locked %}
+  <main class="max-w-md mx-auto mt-20 p-6">
+    <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200">
+      <h2 class="text-xl font-bold text-stone-900 mb-1">Staff Access Required</h2>
+      <p class="text-sm text-stone-500 mb-6">Enter the desk password to view live food orders and table bookings.</p>
+      {% if error %}
+      <div class="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-sm">{{ error }}</div>
+      {% endif %}
+      <form method="POST" action="/bookings" class="space-y-4">
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter password"
+          required
+          autofocus
+          class="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+        />
+        <button type="submit" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-2.5 rounded-lg transition">
+          Unlock Bookings
+        </button>
+      </form>
+    </div>
+  </main>
+  {% else %}
+  <main class="max-w-5xl mx-auto p-6 space-y-8">
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-amber-700">Chat Food Orders ({{ orders|length }})</h2>
+        <span class="text-xs text-stone-500">Stored in data/orders.json</span>
+      </div>
+      {% if orders %}
+      <table class="w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="border-b bg-stone-50 text-stone-600">
+            <th class="p-3">Order ID</th>
+            <th class="p-3">Customer & Phone</th>
+            <th class="p-3">Items</th>
+            <th class="p-3">Total & Payment</th>
+            <th class="p-3">Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr class="border-b">
+            <td class="p-3 font-mono font-semibold text-amber-700">{{ o.order_id }}</td>
+            <td class="p-3"><div class="font-medium">{{ o.customer_name }}</div><div class="text-xs text-stone-500">{{ o.phone }}</div></td>
+           <td class="p-3">{{ o['items'] }}</td>
+            <td class="p-3"><div class="font-semibold">{{ o.total }}</div><div class="text-xs text-stone-500">{{ o.payment_note }}</div></td>
+            <td class="p-3 text-stone-600">{{ o.delivery_address }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-sm text-stone-500">No food orders yet. Ask the AI Concierge to order food!</p>
+      {% endif %}
+    </section>
+
+    <section class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-emerald-800">Table Reservations ({{ reservations|length }})</h2>
+        <span class="text-xs text-stone-500">Stored in data/reservations.json</span>
+      </div>
+      {% if reservations %}
+      <table class="w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="border-b bg-stone-50 text-stone-600">
+            <th class="p-3">Booking ID</th>
+            <th class="p-3">Guest Name</th>
+            <th class="p-3">Guests</th>
+            <th class="p-3">Time</th>
+            <th class="p-3">Booked Via</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in reservations %}
+          <tr class="border-b">
+            <td class="p-3 font-mono font-semibold text-emerald-700">{{ r.booking_id }}</td>
+            <td class="p-3 font-medium">{{ r.customer_name }}</td>
+            <td class="p-3">{{ r.guests }}</td>
+            <td class="p-3">{{ r.time_slot }}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-900">{{ r.source }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-sm text-stone-500">No table bookings yet.</p>
+      {% endif %}
+    </section>
+  </main>
+  {% endif %}
+</body>
+</html>
