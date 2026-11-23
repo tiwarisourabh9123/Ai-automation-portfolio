@@ -1,0 +1,57 @@
+[
+  {
+    "id": "dish_01",
+    "name": "Paneer Tikka Platter",
+    "category": "Starters",
+    "price": 280,
+    "is_veg": true,
+    "is_vegan": false,
+    "allergens": ["dairy"],
+    "spice_level": "Medium",
+    "description": "Cottage cheese cubes marinated in hung curd, Kashmiri chilli, and tandoori spices, char-grilled with bell peppers."
+  },
+  {
+    "id": "dish_02",
+    "name": "Crispy Chilli Baby Corn",
+    "category": "Starters",
+    "price": 240,
+    "is_veg": true,
+    "is_vegan": true,
+    "allergens": ["soy", "gluten"],
+    "spice_level": "High",
+    "description": "Wok-tossed baby corn coated in light cornflour batter with garlic, spring onions, and fiery Schezwan glaze."
+  },
+  {
+    "id": "dish_03",
+    "name": "Murgh Malai Kebab",
+    "category": "Starters",
+    "price": 340,
+    "is_veg": false,
+    "is_vegan": false,
+    "allergens": ["dairy", "cashew"],
+    "spice_level": "Mild",
+    "description": "Tender chicken breast pieces marinated in cream, cashew paste, cardamom, and white pepper."
+  },
+  {
+    "id": "dish_04",
+    "name": "Dal Tadka & Jeera Rice Bowl",
+    "category": "Mains",
+    "price": 260,
+    "is_veg": true,
+    "is_vegan": true,
+    "allergens": [],
+    "spice_level": "Mild",
+    "description": "Yellow lentils tempered with cumin, garlic, and tomatoes served alongside fragrant cumin basmati rice. 100% nut-free and dairy-free."
+  },
+  {
+    "id": "dish_05",
+    "name": "Hyderabadi Chicken Dum Biryani",
+    "category": "Mains",
+    "price": 380,
+    "is_veg": false,
+    "is_vegan": false,
+    "allergens": ["dairy"],
+    "spice_level": "High",
+    "description": "Slow-cooked aromatic basmati rice layered with saffron, mint, fried onions, and spiced chicken. Served with raita."
+  }
+]

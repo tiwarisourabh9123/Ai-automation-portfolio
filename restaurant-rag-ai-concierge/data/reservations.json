@@ -1,0 +1,66 @@
+[
+  {
+    "booking_id": "TBL-3C7BF",
+    "timestamp": "2026-11-20 03:17 PM",
+    "customer_name": "sourabh",
+    "guests": 12,
+    "time_slot": "00:12",
+    "source": "Website Form"
+  },
+  {
+    "booking_id": "TBL-5FF28",
+    "timestamp": "2026-11-20 03:19 PM",
+    "customer_name": "sourabh",
+    "guests": 11,
+    "time_slot": "11:11",
+    "source": "Website Form"
+  },
+  {
+    "booking_id": "TBL-0D6CF",
+    "timestamp": "2026-11-20 03:27 PM",
+    "customer_name": "Sourabh Tiwari",
+    "guests": 12,
+    "time_slot": "8:00 PM",
+    "source": "AI Chatbot"
+  },
+  {
+    "booking_id": "TBL-97AE4",
+    "timestamp": "2026-11-20 03:31 PM",
+    "customer_name": "St",
+    "guests": 2,
+    "time_slot": "8:00 PM",
+    "source": "AI Chatbot"
+  },
+  {
+    "booking_id": "TBL-526D4",
+    "timestamp": "2026-11-20 03:38 PM",
+    "customer_name": "Sourabh Tiwari",
+    "guests": 12,
+    "time_slot": "7:00 PM",
+    "source": "AI Chatbot"
+  },
+  {
+    "booking_id": "TBL-1AE5F",
+    "timestamp": "2026-11-20 03:42 PM",
+    "customer_name": "Sourabh Tiwari",
+    "guests": 10,
+    "time_slot": "8:00 PM",
+    "source": "AI Chatbot"
+  },
+  {
+    "booking_id": "TBL-E7DC6",
+    "timestamp": "2026-11-20 03:43 PM",
+    "customer_name": "Sourabh",
+    "guests": 12,
+    "time_slot": "tomorrow 6 pm",
+    "source": "AI Chatbot"
+  },
+  {
+    "booking_id": "TBL-0AEC4",
+    "timestamp": "2026-11-20 03:48 PM",
+    "customer_name": "Souarbh",
+    "guests": 12,
+    "time_slot": "20-11-26, 7 pm",
+    "source": "AI Chatbot"
+  }
+]
